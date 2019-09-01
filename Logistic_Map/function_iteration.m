@@ -1,0 +1,19 @@
+clear;clc;
+figure_num=10;
+f1=@(x)(x<=0.5).*2.*x+(x>0.5).*(2-2*x);
+f2=@(x)4*x.*(1-x);
+x=0:0.001:1;
+y1=f1(f1(f1(f1(f1(f1(f1(f1(f1(f1(x))))))))));
+y1=f1(x);
+%y1=0.5+0.5*cos(2*pi*x);
+y2=f2(f2(f2(f2(f2(f2(f2(f2(f2(f2(x))))))))));
+y2=f2(x);
+%y2=0.5+0.5*cos(2*pi*x);
+for i=1:figure_num
+    subplot(figure_num,2,2*(i-1)+1)
+    plot(x,y1);
+    subplot(figure_num,2,2*(i-1)+2)
+    plot(x,y2);
+    y1=f1(y1);
+    y2=f2(y2);
+end
