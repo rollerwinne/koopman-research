@@ -2,11 +2,11 @@
 % 测试数据
 clear;close all
 n=1000;%粒子个数
-m=100;%基函数个数
-times=10;%一次演化波包数
+m=6;%基函数个数
+times=100;%一次演化波包数
 
 x0=linspace(0,1,n);
-D=0.000;
+D=0.001;
 f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D));%Tent map
 % f=@(x)1-2*abs(x-1/2);
 % f=@(x)awgn(4.*x.*(1-x),10*log10(1/D));%Logistic map
@@ -33,11 +33,11 @@ U=pinv(K)*L;
 U=U;
 [F,D]=eig(U);
 D=diag(D);
-h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
-% h=1:length(D)
-for i=1:min(length(h),10)
+% h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
+h=1:length(D)
+for i=1:min(length(h),9)
     A=abs(K*F(:,h(i)));
-    figure
+    subplot(3,3,i)
     %set(gcf,'outerposition',get(0,'screensize'));
     hh=plot(x0,A);
     d_abs=abs(D(h(i)));
@@ -48,9 +48,9 @@ for i=1:min(length(h),10)
 end
 
 figure;
-subplot(131);spy(U);title('U')
-subplot(132);spy(K);title('K')
-subplot(133);spy(L);title('L')%K与L的矩阵形式
+subplot(131);spyl(U);colorbar;title('U')
+subplot(132);spyl(K);colorbar;title('K')
+subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
 
 %
 % for i=1:length(x0)
