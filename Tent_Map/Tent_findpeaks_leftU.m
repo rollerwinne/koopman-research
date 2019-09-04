@@ -84,5 +84,5 @@ str2=[num2str(d_abs) ' ¡Ï' num2str(d_angle) '¡ã'];
 title({str1;str2});
 str=['.\temp2\Tent_findpeaks_leftU_noise_',setup.function,'_n',num2str(n),'m',num2str(m),'_figure',num2str(I)];
 % saveas(hh,[str,'.fig'])
-saveas(hh,[str,'.png'])
+% saveas(hh,[str,'.png'])
 end

@@ -1,16 +1,16 @@
 clear;clc;close all
 n=1000;p=1;
 
-setup.function='GaussL';
+setup.function='RectangleL';
 setup.complex='real';
 setup.bin=0;
 setup.figurenum=10;
 
-%x=Tent_x(n,p);
-x=Tent_x_noise(n,p,0.001);
+x=Tent_x(n,p);
+%x=Tent_x_noise(n,p,0.001);
 x0=linspace(0,1,n);
 peak_num=[];
-for m=6
+for m=100
     switch setup.function
         case {'GaussL'}
             [F,D,U,K,L,x_marker] = Tent_U_Gauss_leftU(x,m);
