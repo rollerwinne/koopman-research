@@ -2,16 +2,19 @@
 % 测试数据
 clear;close all
 n=1000;%粒子个数
-m=100;%基函数个数 6 100;100 10
-times=10;%一次演化波包数
+m=40;%基函数个数 6 100;100 10
+times=60;%一次演化波包数
+D=0.01;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
-D=0.001;
-f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D));%Tent map (noise)
-% f=@(x)1-2*abs(x-1/2); %Tent map(clean)
-% f=@(x)awgn(4.*x.*(1-x),10*log10(1/D));%Logistic map(noise)
-% f=@(x)4.*x.*(1-x);%Logistic map(clean)
-% figure;plot(x0,f(x0))
+% f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); %Tent map with noise
+% g=@(x)1-2*abs(x-1/2); %Tent map
+% f=@(x)awgn(g(g(x)),10*log10(1/D)); % Tent map*2
+f=@(x)awgn(3.90.*x.*(1-x),10*log10(1/D)); %Logistic map with noise
+% f=@(x)4.*x.*(1-x);%Logistic map
+% f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/D)); %偏移至0.41左右 with noise
+% f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
+figure(3);plot(x0,f(x0))
 X=zeros(n,times);
 
 K=zeros(n,m);
@@ -33,10 +36,12 @@ U=pinv(K)*L;
 U=U;
 [F,D]=eig(U);
 D=diag(D);
-% h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
-h=1:length(D)
+h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
+if length(D)<=9
+    h=1:length(D)
+end
 for i=1:min(length(h),9)
-    A=abs(K*F(:,h(i)));
+    A=real(K*F(:,h(i)));
     figure(1);
     subplot(3,3,i)
     %set(gcf,'outerposition',get(0,'screensize'));
@@ -49,10 +54,10 @@ for i=1:min(length(h),9)
 end
 figure(2);
 SVG_draw(U,K,n,m,0,0.1,1)
-figure(3);
-subplot(131);spyl(U);colorbar;title('U')
-subplot(132);spyl(K);colorbar;title('K')
-subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
+% figure(3);
+% subplot(131);spyl(U);colorbar;title('U')
+% subplot(132);spyl(K);colorbar;title('K')
+% subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
 
 %
 % for i=1:length(x0)
