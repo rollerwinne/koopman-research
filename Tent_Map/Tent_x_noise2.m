@@ -2,15 +2,15 @@
 % 测试数据
 clear;close all
 n=1000;%粒子个数
-m=6;%基函数个数
-times=100;%一次演化波包数
+m=100;%基函数个数 6 100;100 10
+times=10;%一次演化波包数
 
 x0=linspace(0,1,n);
 D=0.001;
-f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D));%Tent map
-% f=@(x)1-2*abs(x-1/2);
-% f=@(x)awgn(4.*x.*(1-x),10*log10(1/D));%Logistic map
-% f=@(x)4.*x.*(1-x);
+f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D));%Tent map (noise)
+% f=@(x)1-2*abs(x-1/2); %Tent map(clean)
+% f=@(x)awgn(4.*x.*(1-x),10*log10(1/D));%Logistic map(noise)
+% f=@(x)4.*x.*(1-x);%Logistic map(clean)
 % figure;plot(x0,f(x0))
 X=zeros(n,times);
 
@@ -37,6 +37,7 @@ D=diag(D);
 h=1:length(D)
 for i=1:min(length(h),9)
     A=abs(K*F(:,h(i)));
+    figure(1);
     subplot(3,3,i)
     %set(gcf,'outerposition',get(0,'screensize'));
     hh=plot(x0,A);
@@ -46,8 +47,9 @@ for i=1:min(length(h),9)
     str2=[num2str(d_abs) ' ∠' num2str(d_angle) '°'];
     title({str1;str2});
 end
-
-figure;
+figure(2);
+SVG_draw(U,K,n,m,0,0.1,1)
+figure(3);
 subplot(131);spyl(U);colorbar;title('U')
 subplot(132);spyl(K);colorbar;title('K')
 subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
