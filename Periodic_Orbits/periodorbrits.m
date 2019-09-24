@@ -1,9 +1,9 @@
 clear;clf,close all
-% alpha=4;
-% f=@(x)alpha.*x.*(1-x);
-% df=@(x)alpha-2*alpha*x;
-f=@(x)1-2*abs(x-1/2);
-df=@(x)(x>=0 & x<0.5)*2+(x==0.5)*0+(x>0.5 & x<=1)*(-2);
+alpha=4;
+f=@(x)alpha.*x.*(1-x);
+df=@(x)alpha-2*alpha*x;
+%f=@(x)1-2*abs(x-1/2);
+%df=@(x)(x>=0 & x<0.5)*2+(x==0.5)*0+(x>0.5 & x<=1)*(-2);
 for n=2:10
     X=[];
     [A,num]=symbolperiod(n);
