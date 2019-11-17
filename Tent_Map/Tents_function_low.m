@@ -41,3 +41,6 @@ for i=2:n-1
     sx=[sx;fsolve(eval([str,'-',num2str(seq(i))]),x0)];
 end
 end
+% 
+% @(x)awgn(+(-0+k*x).*(x>=0*block&x<1*block)+(2-k*x).*(x>=1*block&x<=2*block),10*log10(1/D))
+% @(x)awgn(+(-0+k*x/2).*(x>=0*block&x<1*block)+(1-k*x/2).*(x>=1*block&x<=2*block),10*log10(1/D))

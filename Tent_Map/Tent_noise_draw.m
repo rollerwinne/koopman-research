@@ -4,12 +4,12 @@ clear;close all
 n=1000;%粒子个数
 m=100;%基函数个数 6 100;100 10
 times=10;%一次演化波包数
-D=0.001;%噪声强度,信噪比的倒数
+D=0.000;%噪声强度,信噪比的倒数
 
 
 x0=linspace(0,1,n);
 %[f,seq,sx]=Tents_function(7,D);           % Tents map
-[f,seq,sx]=Tents_function_low(3,D);           % Tents map low
+[f,seq,sx]=Tents_function(5,D);           % Tents map low()
 % f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/D));        % Tent map*2
@@ -18,8 +18,9 @@ x0=linspace(0,1,n);
 % f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/D)); %偏移至0.41左右 with noise
 % f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
 s=jet(n);
-for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
+for m=[2,4,8,16,32,64,128]%[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
     figure(m);
+    %     suptitle(['m=',num2str(m)])
     subplot(3,3,1)
     plot(x0,f(x0))
     if exist('seq')
@@ -44,15 +45,15 @@ for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         end
     end
     U=pinv(K)*L;
-    U=U;
     [F,D]=eig(U);
     D=diag(D);
-    h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
+    %h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
+    h=find(abs(D)>0.001 & abs(D)<1.3 & abs(imag(D))<1e-13);
     if length(D)<=9
         h=1:length(D);
     end
     figure(m);
-    for i=1:min(length(h),8)
+    for i=min(length(h),8):-1:1
         A=real(K*F(:,h(i)));
         subplot(3,3,i+1)
         % set(gcf,'outerposition',get(0,'screensize'));
@@ -62,7 +63,7 @@ for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         % draw_trough(A,x0,seq,sx);
         [xp,yp]=draw_peaks(A,x0);
         [xt,yt]=draw_trough(A,x0);
-        if (i==1)
+        if (D(h(i))<0)%记录负本征函数
             xpp=xp;
             ypp=yp;
             xtt=xt;
@@ -81,6 +82,13 @@ for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         str2=[num2str(d_abs) ' ∠' num2str(d_angle) '°'];
         title({str1;str2});
     end
+    if ~exist('xpp')%默认记录第一个本征函数
+        xpp=xp;
+        ypp=yp;
+        xtt=xt;
+        ytt=yt;
+        AA=A;
+    end
     figure(101)
     subplot(121)
     hold on
@@ -91,6 +99,8 @@ for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         end
         plot(m,xpp(i),'*','Color',s(y1index,:))
     end
+    colorbar
+    title('波峰')
     subplot(122)
     hold on
     for i=1:length(ytt)
@@ -100,6 +110,8 @@ for m=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         end
         plot(m,xtt(i),'*','Color',s(y2index,:))
     end
+    colorbar
+    title('波谷')
 end
 colormap(jet)
 %figure(3);
