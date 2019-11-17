@@ -9,7 +9,7 @@ D=0.000;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
 %[f,seq,sx]=Tents_function(7,D);           % Tents map
-[f,seq,sx]=Tents_function(5,D);           % Tents map low()
+[f,seq,sx]=Tents_function(3,D);           % Tents map low()
 % f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/D));        % Tent map*2
