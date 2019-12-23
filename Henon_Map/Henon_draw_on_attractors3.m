@@ -77,10 +77,11 @@ for i=1:min(figure_num,length(h))
         scatter3(x_attr(:),y_attr(:),z_min*ones(length(x_attr(:)),1),3,min(Z(:))*ones(length(x_attr(:)),1));%Л­Юќв§зг
         plot3([Attr.x1;Attr.x2],[Attr.y1;Attr.y2],z_min1*ones(2,1),'r*');
         
-        B=Henon_Boundary(xy_bound,5,5);
-        plot3(B(:,1),B(:,2),z_min1*ones(length(B(:,1)),1),'ro');
+        %B=Henon_Boundary(xy_bound,5,5);
+        %plot3(B(:,1),B(:,2),z_min1*ones(length(B(:,1)),1),'ro');
+        load('boundary.mat','boundary')
+        hh=plot3(boundary(1,:),boundary(2,:),z_min1*ones(length(boundary(1,:)),1),'ro');
         
-        plot
         view(-15,60)
         xlim([-1.5,1.5])
         ylim([-1.5,1.5])
@@ -101,9 +102,9 @@ for i=1:min(figure_num,length(h))
         colormap(jet)
     end
     suptitle({str0;[str2,'; ',str3];str1})
-    str=['./temp/Henon_eigenfunctions_on_attractors_',num2str(choose),'_figure' num2str(i)];
+    str=['./temp2/Henon_eigen_attr_',num2str(choose),'_figure' num2str(i)];
     % saveas(hh,[str,'.fig']);
-    % saveas(hh,[str,'.png']);
+    saveas(hh,[str,'.png']);
     % attachments{i}=[str,'.png'];
 end
 %% send an E-mail to me

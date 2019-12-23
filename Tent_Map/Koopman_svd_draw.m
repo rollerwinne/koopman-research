@@ -12,6 +12,14 @@
 
 function [KV,KD]=Koopman_svd_draw(K,L,r)
 [U,E,V]=svd(K);
+% main=abs(E(1,1));
+% for i=2:length(E(1,:))
+%     %disp(abs(E(i,i)/main));
+%     if abs(E(i,i)/main)<err
+%         r=i;
+%         break
+%     end
+% end
 U=U(:,1:r);
 E=E(1:r,1:r);
 V=V(:,1:r);

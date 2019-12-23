@@ -15,7 +15,7 @@ x0=linspace(0,1,n);
 % f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
 s=jet(n);
 flag=0;
-for m=[8,16]%[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
+for m=[64,128]%[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
     K=zeros(n,m);
     L=zeros(n,m);
     for j=1:m %对于每个基函数
@@ -40,21 +40,24 @@ for m=[8,16]%[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
     end
     if flag==0
         flag=1;
-    else
+        m_pre=m;
         for j=1:min(length(h),9)
+            choose=j;
+            X_eigen(:,choose)=real(K*F(:,h(choose)));
+            X_para(:,choose)=real(F(:,h(choose)));
+            lambda(choose)=D(h(choose));
+        end
+    else
+        for j=1:min(length(lambda),9)
             subplot(3,3,j)
             plot(x0,X_eigen(:,j))
             hold on
-            Koopman_findeigen_draw(K,U,X_eigen(:,j),X_para(:,j),n,lambda,0.01,0);
-            legend(['by m=',num2str(m_pre)],['finding m=',num2str(m)])
+            hh=Koopman_findeigen_draw(K,U,X_eigen(:,j),X_para(:,j),n,lambda(j),0.01,0);
+            %legend(['by m=',num2str(m_pre)],['finding m=',num2str(m)])
         end
-    end
-    m_pre=m;
-    for j=1:min(length(h),9)
-        choose=j;
-        X_eigen(:,choose)=real(K*F(:,h(choose)));
-        X_para(:,choose)=real(F(:,h(choose)));
-        lambda(choose)=D(h(choose));
+        suptitle(['finding m=',num2str(m),' by m=',num2str(m_pre)]);
+        set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+        saveas(hh,['temp4/Tent_findeigen_m',num2str(m_pre),'m',num2str(m),'.png']);
     end
 end
 

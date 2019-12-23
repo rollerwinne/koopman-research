@@ -1,8 +1,6 @@
-%function [rou,X]=Tent_x_noise2(n,p,D)
-% 测试数据
 clear;close all
 n=1000;%粒子个数
-m=100;%基函数个数 6 100;100 10
+%m=50;%基函数个数 6 100;100 10
 times=1;%一次演化波包数
 d=0.000;%噪声强度,信噪比的倒数
 
@@ -12,17 +10,12 @@ x0=linspace(0,1,n);
 [f,seq,sx]=Tents_function(3,d);           % Tents map low()
 % f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/d)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
-% f=@(x)awgn(g(g(x)),10*log10(1/d));        % Tent map*2
-% f=@(x)awgn(3.90.*x.*(1-x),10*log10(1/d)); % Logistic map with noise
-% f=@(x)4.*x.*(1-x);                        % Logistic map
-% f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/d)); %偏移至0.41左右 with noise
-% f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
+
 s=jet(n);YY=[];
-M=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100];
+M=[6,8,10,20,50,100];
 for m=M
     figure(m);
     set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
-    %     suptitle(['m=',num2str(m)])
     subplot(3,3,1)
     plot(x0,f(x0))
     if exist('seq')
@@ -33,7 +26,7 @@ for m=M
     K=zeros(n,m);
     L=zeros(n,m);
     for j=1:m %对于每个基函数
-        %     g_temp=Rect_fun(j,m);%rect基函数
+        % g_temp=Rect_fun(j,m);%rect基函数
         g_temp=Gauss_fun(m);%Gauss基函数
         for i=1:length(x0) %对于每个相空间的点
             K(i,j)=g_temp(x0(i),j,m);
@@ -54,82 +47,46 @@ for m=M
         h=1:length(D);
     end
     figure(m);
-    for i=min(length(h),8):-1:1
+    for i=1:min(length(h),8)
         A=real(K*F(:,h(i)));
         subplot(3,3,i+1)
-        % set(gcf,'outerposition',get(0,'screensize'));
-        hh=plot(x0,A);
+        plot(x0,A);
         hold on
-        % draw_peaks(A,x0,seq,sx);
-        % draw_trough(A,x0,seq,sx);
-        [xp,yp]=draw_peaks(A,x0);
-        [xt,yt]=draw_trough(A,x0);
-        if min(length(h),8)==1%选第一个或第二个
-            ch=1;
-        else
-            ch=2;
-        end
-        if i==ch%(D(h(i))<0)%记录负本征函数
-            xpp=xp;
-            ypp=yp;
-            xtt=xt;
-            ytt=yt;
-            AA=A;
-        end
-        if exist('seq')
-            plot(seq,min(A),'r*')
-        end
-        if exist('sx')
-            draw_boundary(min(A),max(A),sx)
-        end
-        d_abs=abs(D(h(i)));
-        d_angle=angle(D(h(i)))/pi*180;
-        str1=['n=',num2str(n),'; m=',num2str(m)];
-        str2=[num2str(d_abs) ' ∠' num2str(d_angle) '°'];
-        title({str1;str2});
+        [xp,yp]=draw_peaks(A,x0);%画峰
+        [xt,yt]=draw_trough(A,x0);%画谷
+        draw_boundary(min(A),max(A),sx);%画边界点
+        plot(seq,min(A),'r*');
+        %auto_level(f,[xp,xt],1e-2);
+        auto_level(f,xp,yp,A,0.02);
+        hh=auto_level(f,xt,yt,A,0.02);
     end
-    if ~exist('xpp')%默认记录第一个本征函数
-        xpp=xp;
-        ypp=yp;
-        xtt=xt;
-        ytt=yt;
-        AA=A;
-    end
-    figure(101)
-    draw_pt(xpp,ypp,xtt,ytt,AA,s,n,m);
-    filename=['Tent_eigen_m',num2str(m),'d',num2str(d),'.png'];
-    %saveas(hh,['temp4/',filename]);
-    YY=[YY,AA-mean(AA)];
+    saveas(hh,['temp4/Tent_auto_level_m',num2str(m),'.png'])
 end
 colormap(jet)
-figure(102)
-[xm,ym]=meshgrid(x0,M);
-waterfall(xm,ym,YY')
-%figure(3);
-%SVG_draw(U,K,n,m,0,0.1,1)
+
 function hh=draw_pt(xpp,ypp,xtt,ytt,AA,s,n,m)
 subplot(121)
-    hold on
-    for i=1:length(ypp)
-        y1index=floor( (ypp(i)-min(AA)) / (max(AA)-min(AA))*n+1);
-        if y1index>n
-            y1index=n;
-        end
-        plot(m,xpp(i),'*','Color',s(y1index,:))
+hold on
+for i=1:length(ypp)
+    y1index=floor( (ypp(i)-min(AA)) / (max(AA)-min(AA))*n+1);
+    if y1index>n
+        y1index=n;
     end
-    colorbar
-    title('波峰')
-    subplot(122)
-    hold on
-    for i=1:length(ytt)
-        y2index=floor( (ytt(i)-min(AA)) / (max(AA)-min(AA))*n+1);
-        if y2index>n
-            y2index=n;
-        end
-        hh=plot(m,xtt(i),'*','Color',s(y2index,:));
+    plot(m,xpp(i),'*','Color',s(y1index,:))
+end
+colorbar
+title('波峰')
+subplot(122)
+hold on
+for i=1:length(ytt)
+    y2index=floor( (ytt(i)-min(AA)) / (max(AA)-min(AA))*n+1);
+    if y2index>n
+        y2index=n;
     end
-    colorbar
-    title('波谷')
+    hh=plot(m,xtt(i),'*','Color',s(y2index,:));
+end
+colorbar
+title('波谷')
 end
 
 function [xt,yt]=draw_trough(A,x0,seq,sx)

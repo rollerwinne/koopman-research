@@ -35,3 +35,10 @@ hold on
 plot([0,1],[0,0],'r')
 title(['\mu=',num2str(miu),',\lambda=0,fval=',num2str(fval2),',flag=',num2str(exitflag2)])
 
+function [c,ceq] = con(x)
+    %c=[];
+    c(1) = x(end)+0.1;
+    c(2) = -x(end);
+    ceq(1) = norm(x(1:end-1),2)-1;
+    %ceq(2) = x(end);
+end
