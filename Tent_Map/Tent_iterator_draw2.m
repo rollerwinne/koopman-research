@@ -1,11 +1,11 @@
 clear;close all
-n=1000;%粒子个数
-m=15;%基函数个数 6 100;100 10
+n=100;%粒子个数
+m=4;%基函数个数 6 100;100 10
 times=1;%一次演化波包数
 D=0.00;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
-% f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); %Tent map with noise
+%f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); %Tent map with noise
 % g=@(x)1-2*abs(x-1/2); %Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/D)); % Tent map*2
 f=@(x)awgn(4.*x.*(1-x),10*log10(1/D)); %Logistic map with noise

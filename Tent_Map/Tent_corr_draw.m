@@ -1,15 +1,15 @@
 clear;close all
 n=1000;%粒子个数
 times=1;%一次演化波包数
-D=0.000;%噪声强度,信噪比的倒数
+d=0.000;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
 %[f,seq,sx]=Tents_function(7,D);           % Tents map
-[f,seq,sx]=Tents_function(3,D);           % Tents map low()
+%[f,seq,sx]=Tents_function(3,d);           % Tents map low()
 % f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/D));        % Tent map*2
-% f=@(x)awgn(3.90.*x.*(1-x),10*log10(1/D)); % Logistic map with noise
+f=@(x)awgn(4.*x.*(1-x),10*log10(1/d)); % Logistic map with noise
 % f=@(x)4.*x.*(1-x);                        % Logistic map
 % f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/D)); %偏移至0.41左右 with noise
 % f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
@@ -35,7 +35,7 @@ for m=[8,16,32,64,128]%[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100]
         flag=1;
     else
         hh=Tent_eigen_corr(K_pre,K,L_pre,L,n,m_pre,m);
-        saveas(hh,['temp4/Tent_eigen_cov_m',num2str(m_pre),'m',num2str(m),'.png']);
+        saveas(hh,['temp4/Logistic_eigen_cov_m',num2str(m_pre),'m',num2str(m),'.png']);
     end
     m_pre=m;
     K_pre=K;

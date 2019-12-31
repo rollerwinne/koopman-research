@@ -38,7 +38,7 @@ for i=1:m
     L(:,i)=L_x(i:i+n-1);
 end
 x_initial=K_x(1:n);
-[F,D]=Koopman_svd_draw(K,L,r);
+[F,D,R]=Koopman_svd_draw(K,L,r);
 % U=pinv(K)*L;
 % [F,D]=eig(U);
 D=diag(D);

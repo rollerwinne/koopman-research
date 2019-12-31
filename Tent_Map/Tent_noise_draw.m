@@ -1,20 +1,21 @@
-%function [rou,X]=Tent_x_noise2(n,p,D)
-% 测试数据
 clear;close all
 n=1000;%粒子个数
 m=100;%基函数个数 6 100;100 10
-times=1;%一次演化波包数
-d=0.000;%噪声强度,信噪比的倒数
-
+times=20;%一次演化波包数
+d=0.001;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
+g=@(x)4.*x.*(1-x);
+x0=sort(g(x0));
 %[f,seq,sx]=Tents_function(7,d);           % Tents map
-[f,seq,sx]=Tents_function(3,d);           % Tents map low()
+[f,seq,sx]=Tents_function_low(5,d);           % Tents map low()
 % f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/d)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/d));        % Tent map*2
-% f=@(x)awgn(3.90.*x.*(1-x),10*log10(1/d)); % Logistic map with noise
-% f=@(x)4.*x.*(1-x);                        % Logistic map
+%f=@(x)awgn(4.*x.*(1-x),10*log10(1/d)); % Logistic map with noise
+%f=@(x)4.*x.*(1-x);                        % Logistic map
+S=load('dataLogistic');
+seq=S.X{4};
 % f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/d)); %偏移至0.41左右 with noise
 % f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
 s=jet(n);YY=[];
@@ -97,8 +98,8 @@ for m=M
     end
     figure(101)
     draw_pt(xpp,ypp,xtt,ytt,AA,s,n,m);
-    filename=['Tent_eigen_m',num2str(m),'d',num2str(d),'.png'];
-    %saveas(hh,['temp4/',filename]);
+    filename=['Logistic_eigen_m',num2str(m),'d',num2str(d),'.png'];
+    saveas(hh,['temp4/',filename]);
     YY=[YY,AA-mean(AA)];
 end
 colormap(jet)

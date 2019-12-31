@@ -10,7 +10,7 @@
 % KV=U*KV;
 % end
 
-function [KV,KD]=Koopman_svd_draw(K,L,r)
+function [KV,KD,U]=Koopman_svd_draw(K,L,r)
 [U,E,V]=svd(K);
 % main=abs(E(1,1));
 % for i=2:length(E(1,:))
