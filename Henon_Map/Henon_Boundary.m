@@ -28,12 +28,18 @@ for i=1:length(A(:,1))
     x=A(i,1);y=A(i,2);
     x_temp=x;y_temp=y;
     for j=1:iter
-        x_temp=f(x_temp,y_temp);y_temp=g(x_temp,y_temp);
+        x_temp2=f(x_temp,y_temp);
+        y_temp2=g(x_temp,y_temp);
+        x_temp=x_temp2;
+        y_temp=y_temp2;
         B=[B;x_temp,y_temp];
     end
     x_temp=x;y_temp=y;
     for j=1:iterinv
-        x_temp=f_inv(x_temp,y_temp);y_temp=g_inv(x_temp,y_temp);
+        x_temp2=f_inv(x_temp,y_temp);
+        y_temp2=g_inv(x_temp,y_temp);
+        x_temp=x_temp2;
+        y_temp=y_temp2;
         B=[B;x_temp,y_temp];
     end
 end

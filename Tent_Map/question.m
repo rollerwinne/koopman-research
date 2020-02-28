@@ -76,6 +76,7 @@
 
 %% 2019.12.31
 % 一维演化格点自然
-% diffution map
+% diffusion map
 % 二维自然演化格点、排序
 % Lorenz自然演化
+% 为啥到了60就没了

@@ -1,18 +1,21 @@
 clear;close all
-n=100;%粒子个数
-m=4;%基函数个数 6 100;100 10
+n=1000;%粒子个数
+m=5;%基函数个数 6 100;100 10
 times=1;%一次演化波包数
 D=0.00;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
-%f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/D)); %Tent map with noise
+alpha=1/2;
+%f=@(x)awgn(1-(3-1e-6)*abs(x-1/3),10*log10(1/D)); %Tent map with noise
+%f=@(x)awgn((x<alpha)./alpha.*x+(x>=alpha).*(1/(1-alpha)-1/(1-alpha)*x),10*log10(1/D)); %Tent map with noise
+%f=@(x)awgn((x<(1/3)).*3.*x+(x>=1/3).*(-3/2.*x+3/2),10*log10(1/D));
 % g=@(x)1-2*abs(x-1/2); %Tent map
 % f=@(x)awgn(g(g(x)),10*log10(1/D)); % Tent map*2
 f=@(x)awgn(4.*x.*(1-x),10*log10(1/D)); %Logistic map with noise
 % f=@(x)4.*x.*(1-x);%Logistic map
 % f=@(x)awgn(2.5980762113533159402911695122588.*x.*(1-x).*(2-x),10*log10(1/D)); %偏移至0.41左右 with noise
 % f=@(x)2.5980762113533159402911695122588.*x.*(1-x).*(2-x); %偏移至0.41左右
-% figure(3);plot(x0,f(x0))
+figure(10);plot(x0,f(x0),'b.')
 X=zeros(n,times);
 
 x_iter=rand;
@@ -52,7 +55,7 @@ for i=1:min(length(h),9)
     set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
     subplot(3,3,i)
     %set(gcf,'outerposition',get(0,'screensize'));
-    hh1=plot(1:n,A);
+    hh1=plot(1:n,A,'.');
     d_abs=abs(D(h(i)));
     d_angle=angle(D(h(i)))/pi*180;
     str1=['n=',num2str(n),'; m=',num2str(m)];
@@ -76,8 +79,8 @@ for i=1:min(length(h),9)
     title({str1;str2});
 end
 suptitle('相空间位置')
-saveas(hh1,['temp4/Tent_iteri_m',num2str(m),'.png'])
-saveas(hh2,['temp4/Tent_iterp_m',num2str(m),'.png'])
+%saveas(hh1,['temp4/Tent_iteri_m',num2str(m),'.png'])
+%saveas(hh2,['temp4/Tent_iterp_m',num2str(m),'.png'])
 %figure(2);
 %SVG_draw(U,K,n,m,0,0.1,1)
 % figure(3);
