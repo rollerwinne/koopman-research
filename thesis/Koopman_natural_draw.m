@@ -1,6 +1,7 @@
 clear;close all;clc
 
-[fun,param,options]=Henon_map_3D;
+options=default_options;
+[fun,param,options]=Henon_map_3D(options);
 
 % param.n=1000; %演化格点维度
 param.m=3; %函数格点维度
@@ -12,7 +13,7 @@ options.view=[-15,60]; %画图角度
 Koopman_natural(fun,param,options);
 
 
-function [fun,param,options]=Henon_map
+function [fun,param,options]=Henon_map(options)
 a=1.4;b=0.3;
 D=0;
 fun=@(x)[awgn(x(2)+1-a.*x(1).*x(1),10*log10(1/D));
@@ -31,7 +32,7 @@ options.save.suffix='.png';
 %view(0,90)
 end
 
-function [fun,param,options]=Henon_map_3D
+function [fun,param,options]=Henon_map_3D(options)
 A=-1.86;
 C=0.03;
 D=0;
@@ -53,7 +54,7 @@ options.save.suffix='.png';
 %view(0,90)
 end
 
-function [fun,param,options]=Henon_map_3D2
+function [fun,param,options]=Henon_map_3D2(options)
 A=-1.86;
 C=0.03;
 D=0;
@@ -74,4 +75,13 @@ options.save.pre='Henon_Koopman';
 options.save.suffix='.png';
 %view(-15,60)
 %view(0,90)
+end
+
+function options=default_options
+options.view=[-15,60];
+options.map=jet;
+options.save.enabled=false;
+options.save.path='./temp';
+options.save.pre='Henon_Koopman';
+options.save.suffix='.png';
 end

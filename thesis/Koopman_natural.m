@@ -96,6 +96,14 @@ switch dim
             graph_control_3D(opt);
         end
     otherwise
+        for i=1:dim
+            subplot(2,dim,i)
+            plot(x0(i:dim:end),A_real(i:dim:end));
+            ylabel(['x_',num2str(i),'-real']);
+            subplot(2,dim,i+dim)
+            plot(x0(i:dim:end),A_real(i:dim:end));
+            ylabel(['x_',num2str(i),'-abs']);
+        end
 end
 
 d_abs=abs(D(h(i)));
