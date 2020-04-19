@@ -1,7 +1,7 @@
 clear;close all;clc
 
 options=default_options;
-[fun,param,options]=Henon_map_3D(options);
+[fun,param,options]=Henon_map(options);
 
 % param.n=1000; %演化格点维度
 param.m=3; %函数格点维度
@@ -24,7 +24,7 @@ param.x0=[0.2,0.3];
 param.times=1;
 options.view=[-15,60];
 options.map=jet;
-options.save.enabled=false;
+options.save.enabled=true;
 options.save.path='./temp';
 options.save.pre='Henon_Koopman';
 options.save.suffix='.png';

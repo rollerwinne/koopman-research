@@ -44,6 +44,7 @@ for i=1:min(length(h),9)
     param.dim=dim;
     plotDim(param,opt);
 end
+
 end
 
 function h=plotDim(param,opt)
@@ -55,6 +56,7 @@ D=param.D;
 n=param.n;
 m=param.m;
 times=param.times;
+figure_num=param.figure_num;
 
 figure;
 set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
@@ -106,17 +108,21 @@ switch dim
         end
 end
 
-d_abs=abs(D(h(i)));
-d_angle=angle(D(h(i)))/pi*180;
+d_abs=abs(D(h(figure_num)));
+d_angle=angle(D(h(figure_num)))/pi*180;
 str1=['n=',num2str(n),'; m=',num2str(m),'; times=',num2str(times)];
 str2=[num2str(d_abs) ' б╧' num2str(d_angle) 'бу'];
 suptitle({str1;str2});
 
+saveit(param,opt);
+end
+
+function saveit(param,opt)
 h=gcf;
 if opt.save.enabled
     str=[opt.save.path,'/',opt.save.pre,param_str(param),'figure',num2str(param.figure_num),opt.save.suffix];
-    %disp(str);
-    saveas(h,opt.save_path);
+    disp(str);
+    %saveas(h,str);
 end
 end
 

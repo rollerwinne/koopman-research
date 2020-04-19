@@ -1,4 +1,4 @@
-clear;close all
+clear;close all%自然基，绘制不同基的本征函数，并标出峰谷的位置
 n=1000;%粒子个数
 M=[4,6,8,10,12,14,16,20,28,32,38,44,50,60,64,72,80,90,100];%基函数个数
 times=20;%一次演化波包数
@@ -107,7 +107,7 @@ for m=M
     figure(101)
     draw_pt(xpp,ypp,xtt,ytt,AA,s,n,m);
     filename=['Logistic_natural_eigen_m',num2str(m),'d',num2str(d),'.png'];
-    saveas(hh,['temp4/',filename]);
+    %saveas(hh,['temp4/',filename]);
     YY=[YY,AA-mean(AA)];
 end
 colormap(jet)

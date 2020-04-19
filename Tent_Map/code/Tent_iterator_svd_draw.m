@@ -77,14 +77,8 @@ for i=1:min(length(h),9)
     title({str1;str2});
 end
 suptitle('相空间位置')
-saveas(hh1,['temp4/Tent_iteri_svd_m',num2str(m),'r',num2str(r),'.png'])
-saveas(hh2,['temp4/Tent_iterp_svd_m',num2str(m),'r',num2str(r),'.png'])
-%figure(2);
-%SVG_draw(U,K,n,m,0,0.1,1)
-% figure(3);
-% subplot(131);spyl(U);colorbar;title('U')
-% subplot(132);spyl(K);colorbar;title('K')
-% subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
+%saveas(hh1,['temp4/Tent_iteri_svd_m',num2str(m),'r',num2str(r),'.png'])
+%saveas(hh2,['temp4/Tent_iterp_svd_m',num2str(m),'r',num2str(r),'.png'])
 
 function g = Rect_fun(i,m)
 % x is a number

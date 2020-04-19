@@ -55,7 +55,7 @@ for i=1:min(length(h),9)
     set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
     subplot(3,3,i)
     %set(gcf,'outerposition',get(0,'screensize'));
-    hh1=plot(1:n,A,'.');
+    hh1=plot(1:n,A);
     d_abs=abs(D(h(i)));
     d_angle=angle(D(h(i)))/pi*180;
     str1=['n=',num2str(n),'; m=',num2str(m)];
@@ -79,32 +79,6 @@ for i=1:min(length(h),9)
     title({str1;str2});
 end
 suptitle('相空间位置')
-%saveas(hh1,['temp4/Tent_iteri_m',num2str(m),'.png'])
-%saveas(hh2,['temp4/Tent_iterp_m',num2str(m),'.png'])
-%figure(2);
-%SVG_draw(U,K,n,m,0,0.1,1)
-% figure(3);
-% subplot(131);spyl(U);colorbar;title('U')
-% subplot(132);spyl(K);colorbar;title('K')
-% subplot(133);spyl(L);colorbar;title('L')%K与L的矩阵形式
-
-%
-% for i=1:length(x0)
-%     g_temp=Tent_Rect_fun(i,m);
-%     for j=1:times
-%         X(i,j)=f(x0(i));
-%     end
-% end
-% X=X(:);
-% X=X(X<=1 & X>=0);
-% rou=zeros(1,n);
-% roux=0:1/n:1-1/n;
-% for i=1:n
-%     rou(i)=sum((X>=roux(i))&(X<roux(i)+1/n));
-% end
-% rou(n)=rou(n)+sum(X==1);
-% % rou=rou/times;
-% end
 
 function g = Rect_fun(i,m)
 % x is a number

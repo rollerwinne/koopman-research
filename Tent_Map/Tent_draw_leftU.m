@@ -1,7 +1,7 @@
 clear;clc;close all
 n=1000;p=1;
 
-setup.function='RectangleL';
+setup.function='GaussL';
 setup.complex='real';
 setup.bin=0;
 setup.figurenum=10;
@@ -10,7 +10,7 @@ x=Tent_x(n,p);
 %x=Tent_x_noise(n,p,0.001);
 x0=linspace(0,1,n);
 peak_num=[];
-for m=100
+for m=2
     switch setup.function
         case {'GaussL'}
             [F,D,U,K,L,x_marker] = Tent_U_Gauss_leftU(x,m);
@@ -39,38 +39,5 @@ for m=100
 %         [pks,locs,deep]=Logistic_findpeaks3_2(n,m,F,D,U,h,setup,0.00,i,2,0);
         peak_num=[peak_num;m,length(pks),deep];
     end
-%     for i=1:min(setup.figurenum,length(h))
-%         figure
-%         set(gcf,'outerposition',get(0,'screensize'));
-%         for j=1%:4
-%             %subplot(2,2,j)
-%             switch j
-%                 case 1
-%                     E=real(K*F2(:,h(i)));
-%                     hh=plot(x0,E);
-%                     ylabel('real');
-%                 case 2
-%                     E=imag(F2(:,h(i)));
-%                     hh=stem(x0,E,'.');
-%                     ylabel('imaginary');
-%                 case 3
-%                     E=abs(F2(:,h(i)));
-%                     hh=stem(x0,E,'.');
-%                     ylabel('abs');
-%                 case 4
-%                     E=angle(F2(:,h(i)));
-%                     hh=stem(x0,E,'.');
-%                     ylabel('angle');
-%             end
-%         end
-%         d_abs=abs(D(h(i)));
-%         d_angle=angle(D(h(i)))/pi*180;
-%         str1=['n=',num2str(n),'; m=',num2str(m)];
-%         str2=[num2str(d_abs) ' б╧' num2str(d_angle) 'бу'];
-%         suptitle({str1;str2});
-%         str=['.\temp\Logistic_',setup.function,'_',setup.complex,'_n',num2str(n),'m',num2str(m),'_figure',num2str(i)];
-% %         saveas(hh,[str,'.png'])
-% %         saveas(hh,[str,'.fig'])
-%     end
 end
 % close all
