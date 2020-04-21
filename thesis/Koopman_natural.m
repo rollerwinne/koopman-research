@@ -21,8 +21,8 @@ for i=1:m+n
     L_x((i-1)*dim+1:i*dim)=x_iter';
 end
 for i=1:m
-    K(:,i)=K_x( dim*i-1 : dim*i-1 + dim*n-1 );
-    L(:,i)=L_x( dim*i-1 : dim*i-1 + dim*n-1 );
+    K(:,i)=K_x( dim*(i-1)+1 : dim*(i-1)+1 + dim*n-1 );
+    L(:,i)=L_x( dim*(i-1)+1 : dim*(i-1)+1 + dim*n-1 );
 end
 x_initial=K(:,1);
 

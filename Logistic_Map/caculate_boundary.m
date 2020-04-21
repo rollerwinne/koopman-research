@@ -11,7 +11,7 @@ for i=2:p
         X{i}=[X{i},y'];
     end
 end
-save('data0.mat','X')
+%save('data0.mat','X')
 
 hold on
 s=jet(p);
@@ -26,7 +26,7 @@ str1=['n=',num2str(n),'; m=',num2str(m)];
 str2=[num2str(d_abs) ' ¡Ï' num2str(d_angle) '¡ã'];
 title({str1;str2});
 str=['.\temp\Logistic_findpeaks','_n',num2str(n),'m',num2str(m),'_figure',num2str(i)];
-saveas(hh,[str,'.png'])
+%saveas(hh,[str,'.png'])
 % for j=1:9
 %     %subplot(3,3,j)
 %     hold on

@@ -1,18 +1,17 @@
 %clear
-p=6;
+p=9;syms x;
 warning off
-alpha=4;
-X{1}=P{2};
+X{1}=0;
 for i=2:p
     X{i}=[];
     for j=1:length(X{i-1})
 %         str=['4*x*(1-x)=' num2str(double(X{i-1}(1,j)))];
-        str=['1-2*abs(x-1/2)=' num2str(double(X{i-1}(1,j)))];
-        y=double(solve(str,'x'));
+        str=['1-2*abs(x-1/2)==' num2str(double(X{i-1}(1,j)))];
+        y=double(solve(eval(str)));
         X{i}=[X{i},y'];
     end
 end
-save('tent_PP.mat','X')
+%save('tent_PP.mat','X')
 %save('data0.mat','X')
 %save('PP.mat','X')
 

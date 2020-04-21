@@ -34,8 +34,9 @@ for m=2
         %h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6 &imag(D)~=0); % find complex eigenvalues
         h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6); % find complex eigenvalues
     end
+    figure;
     for i=1:min(setup.figurenum,length(h))
-        [pks,locs,deep]=Tent_findpeaks_leftU(n,m,F,D,K,x_marker,h,setup,0,i,1);
+        [pks,locs,deep]=Tent_findpeaks_leftU(n,m,F,D,K,x_marker,h,setup,i);
 %         [pks,locs,deep]=Logistic_findpeaks3_2(n,m,F,D,U,h,setup,0.00,i,2,0);
         peak_num=[peak_num;m,length(pks),deep];
     end
