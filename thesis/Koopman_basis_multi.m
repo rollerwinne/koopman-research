@@ -1,5 +1,6 @@
 function [K,L]=Koopman_basis_multi(fun,param,opt)
 if param.natural.enabled
+    param.basis='natural';
     [K,L]=Koopman_natural(fun,param,opt);
     return
 end

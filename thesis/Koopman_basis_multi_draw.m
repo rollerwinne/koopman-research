@@ -1,7 +1,7 @@
 clear;close all;clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 options=default_options;                    %
-[fun,param,options]=Tent_map(options);      %
+[fun,param,options]=Intermittency(options); %
 Koopman_basis_multi(fun,param,options);     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -44,19 +44,55 @@ fun=@(x)awgn(alpha.*x.*(1-x),10*log10(1/D));
 
 param.dim=1;
 param.n=1000;
-param.m=[2,3,4,8,10,16,20,50,100];
+param.m=4;%[1,2,3,4,5,6,7,8,9];%4;%[2,3,4,8,10,16,20,50,100];
 param.phase=[0,1];
 param.x0=linspace(param.phase(1),param.phase(2),param.n);
 param.times=1;
-param.basis='Legendre';
+param.basis='natural';
 
-%options.title=['Eigenfunctions of Logistic Map with ',param.basis,' Basis (n=',num2str(param.n),')'];
-options.title=['Eigenfunctions of Logistic Map with ',param.basis,' Basis (n=',num2str(param.n),',noise=',num2str(D),')'];
-options.subp=[3,3];
+param.natural.enabled=true;%自然基
+param.natural.x0=rand;
+
+options.multim.enabled=false;%支持不同的基函数数量
+options.multim.deal='real';
+options.multim.choose=1;
+
+options.title=['Eigenfunctions of Logistic Map with ',param.basis,' Basis (n=',num2str(param.n),')'];
+%options.title=['Eigenfunctions of Logistic Map with ',param.basis,' Basis (n=',num2str(param.n),',noise=',num2str(D),')'];
+options.subp=[2,2];
+
+options.save.enabled=true;
+options.save.path='./temp';
+options.save.pre=['Logistic_eigen_',param.basis];
+options.save.suffix='.png';
+end
+
+%% Intermittency Map
+function [fun,param,options]=Intermittency(options)
+fun=@(x)x./(1-x).*(x<=0.5)+(1-x)./x.*(x>0.5);
+
+param.dim=1;
+param.n=1000;
+param.m=4;%[1,2,3,4,5,6,7,8,9];%[2,3,4,8,10,16,20,50,100];
+param.phase=[0,1];
+param.x0=linspace(param.phase(1),param.phase(2),param.n);
+param.times=1;
+param.basis='natural';%'natural'
+
+param.natural.enabled=true;%自然基
+param.natural.x0=rand;
+
+options.multim.enabled=false;%支持不同的基函数数量
+options.multim.deal='real';
+options.multim.choose=1;
+
+options.title=['Eigenfunctions of Intermittency Map with ',param.basis,' Basis (n=',num2str(param.n),')'];
+% options.title=['Eigenfunctions of Tent Map with ',param.basis,' Basis (n=',num2str(param.n),',noise=',num2str(D),')'];
+options.subp=[2,2];
 
 options.save.enabled=false;
 options.save.path='./temp';
-options.save.pre=['Logistic_eigen_noise_',param.basis];
+options.save.pre=['Tent_eigen_',param.basis];
 options.save.suffix='.png';
 end
 

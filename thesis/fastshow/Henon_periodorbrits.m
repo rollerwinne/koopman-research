@@ -30,22 +30,11 @@ x2=[-1,-0.3];
 
 %%
 P{1}=[0];
-for n=2:10
+for n=2:12
     X=[];
     [A,num]=symbolperiod(n);
     P{1}=[P{1};num];
     for i=1:num
-        %     赋随机初值（通过迭代）
-        %     x=zeros(2*n,1);
-        %     x(1:2)=-1.5+3*rand(2,1);
-        %     xx=x(1);
-        %     yy=x(2);
-        %     for i=2:n
-        %         x(2*i-1)=f(2*i-3,2*i-2);
-        %         xx=[xx;x(2*i-1)];
-        %         x(2*i)=g(2*i-3,2*i-2);
-        %         yy=[yy;x(2*i)];
-        %     end
         x=[];
         xx=[];
         yy=[];
@@ -72,7 +61,7 @@ for n=2:10
             DF=[eye(2),zeros(2,2*(n-2)),-dfgxy(xx(n),yy(n));DF];
             delta=-DF\F;
             sum=sum+1;
-            if norm(delta,2)<1e-15 || sum>1000;
+            if norm(delta,2)<1e-15 || sum>1000
                 break;
             else
                 x=x+delta;
@@ -87,35 +76,76 @@ for n=2:10
         if sum<=1000
             X=[X;x'];
             disp(['n=' num2str(n) ' num=' num2str(i) '/' num2str(num) ' 收敛']);
-            %             subplot(3,3,n-1)
-            %             plot(xx,yy,'*','color','r')
-            %             %axis([-1.5 1.5 -1.5 1.5])
-            %             title(n)
-        else
-            % disp(['n=' num2str(n) ' num=' num2str(i) '/' num2str(num) ' 不收敛']);
-            %             subplot(3,3,n-1)
-            %             plot(0,0,'x')
-            %             axis([-1.5 1.5 -1.5 1.5])
-            %             title(n)
         end
     end
     P{n}=X;
 end
 %save(['./data/Henon_period_orbrits_P_' num2str(x1(1)) '_' num2str(x1(2)) '_' num2str(x2(1)) '_' num2str(x2(2)) '.mat'],'P');
+save(['./data/Henon_period_orbrits.mat'],'P');
 %load(['./data/Henon_period_orbrits_P_' num2str(x1(1)) '_' num2str(x1(2)) '_' num2str(x2(1)) '_' num2str(x2(2)) '.mat']);
 figure
 C=[];
-for i=2:10
-    subplot(3,3,i-1)
+for i=4:12
+    subplot(3,3,i-3)
     %figure
     count=size(P{1,i},1);
     C=[C;count];
-    title(['T=' num2str(i) ',count=' num2str(count) ',Total=' num2str(P{1}(i))])
+    title(['T=' num2str(i) ', symbol=' num2str(P{1}(i)) ', num=' num2str(count)])
     hold on
-    s=jet(count);
+    s=hsv(count);
     for j=1:count
-        %figure
         plot(P{1,i}(j,mod(1:end,2)==1),P{1,i}(j,mod(1:end,2)==0),'*','color',s(j,:))
-        %axis([-1.5 1.5 -1.5 1.5])
     end
+end
+suptitle('Periodic Orbits of Henon Map')
+set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+% saveas(gcf,'./temp/Henon_periodic_orbits.png')
+
+function [A,num]=symbolperiod(n)
+% 给出一个n,输出不同的符号周期轨道及符号周期轨道的个数
+A=[];
+for i=1:2^n-2
+    A=[A;bitget(i,n:-1:1)];
+end
+
+row=1;
+while row<size(A,1)
+    a=A(row,:);
+    for j=1:n
+        a=circshift(a',1)';
+        delete=[];
+        for k=row+1:size(A,1)
+            if a==A(k,:)
+                delete=[delete,k];
+            end
+        end
+        for l=length(delete):-1:1
+            A(delete,:)=[];
+        end
+    end
+    row=row+1;
+end
+
+b=1:n;
+c=b(mod(n,b)==0);
+c([1,end])=[];
+
+row=1;
+while row<=size(A,1)
+    for i=1:length(c)
+        times=n/c(i);
+        flag=0;
+        for j=2:times
+            if sum(A(row,1:c(i))~=A(row,(j-1)*c(i)+1:j*c(i)))>0
+                flag=1;
+            end
+        end
+        if flag==0
+            A(row,:)=[];
+            break;
+        end
+    end
+    row=row+1;
+end
+num=size(A,1);
 end

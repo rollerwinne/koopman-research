@@ -1,7 +1,7 @@
 clear;clc;close all
-uiopen('.\fig\Henon_eigenfunctions_complex_n100m50md45a1.4b0.3.fig',1); % 显示本征函数图像
-load('.\data\Henon_attractors_data_xy.mat'); % 吸引子数据载入
-load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+uiopen('./fig/Henon_eigenfunctions_complex_n100m50md45a1.4b0.3.fig',1); % 显示本征函数图像
+load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入
+load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
 
 % 绘制吸引子
 for i=1:9 

@@ -1,10 +1,10 @@
 clear;clc;close all
-load('.\data\Henon_attractors_data_xy.mat'); % 吸引子数据载入
-load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入
+load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
 choose=6;
 
 for i=1:9
-    str=['.\temp\Henon_eigenfunctions_complex_figure' num2str(i) '.fig'];
+    str=['./temp/Henon_eigenfunctions_complex_figure' num2str(i) '.fig'];
     uiopen(str,1);
     hold on
     plot3(x,y,0.02*ones(1,length(x)),'.','color',[1 0 0.8],'Markersize',1)
@@ -21,8 +21,8 @@ for i=1:9
         end
     end
     drawnow
-    str=['.\temp\real_figure' num2str(i) '.png'];
-    saveas(hh,str)
+    str=['./temp/real_figure' num2str(i) '.png'];
+    %saveas(hh,str)
 end
 
 % str=['.\temp\real_figure' num2str(i) '.png'];

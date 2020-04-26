@@ -2,7 +2,7 @@ clear all;clc;close all;tic
 q=1;a=1.4;b=0.3;
 T=7;
 for choose=3:4;
-    load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+    load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
     x0=P{T}(choose,mod(1:end,2)==1);
     y0=P{T}(choose,mod(1:end,2)==0);
     t=0.5e-7;dot=1;n=10000;
@@ -14,13 +14,13 @@ for choose=3:4;
     dfgxy=@(x,y)[-2*a*x,1;b,0];
     
     s=jet(length(x0));
-    str=['.\temp\test.fig'];
+    str=['./temp/test.fig'];
     uiopen(str,1);  % 本征函数图像
     colormap(gray)
     hold on
     plot3(x0,y0,0.021*ones(length(x0),1),'r*')
     
-    load(['.\data\Henon_victor_field_T' num2str(T) '_choose' num2str(choose) '.mat']);
+    load(['./data/Henon_victor_field_T' num2str(T) '_choose' num2str(choose) '.mat']);
     hold on
     for i=1:length(x1)
         quiver3(x1(i),y1(i),0.021,DX1(i),DY1(i),0,'color',color1{i},'AutoScaleFactor',0.2);
@@ -49,7 +49,7 @@ for choose=3:4;
         end
         k_d=[1,-1];
         for k=1:length(k_d) %向两个方向分别演化
-            [X{i,k},Y{i,k}]=Henon_manifold_computing3(x0(i),y0(i),k_d(k)*v(1),k_d(k)*v(2),T,t,n,dot);
+            [X{i,k},Y{i,k}]=Henon_manifold_computing4(x0(i),y0(i),k_d(k)*v(1),k_d(k)*v(2),T,t,n,dot);
             time=toc;
             disp(['i=' num2str(i)  ', k=' num2str(k_d(k)) ' is done. Used ' num2str(time) ' seconds']);
             hold on

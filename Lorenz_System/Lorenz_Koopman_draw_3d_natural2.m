@@ -58,8 +58,8 @@ for i=1:min(10,length(h))
     str2=[num2str(d_abs) ' б╧' num2str(d_angle) 'бу'];
     suptitle({str1;str2});
     str=['.\temp\Lorenz_eigenfunctions3d_natural_',choose,'_figure' num2str(i)];
-    saveas(hh,[str,'.fig']);
-    saveas(hh,[str,'.png']);
+    %saveas(hh,[str,'.fig']);
+    %saveas(hh,[str,'.png']);
 end
 
 %% send an E-mail to me

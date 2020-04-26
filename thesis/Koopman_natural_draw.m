@@ -1,16 +1,32 @@
 clear;close all;clc
 
 options=default_options;
-[fun,param,options]=Henon_map(options);
+[fun,param,options]=Intermittency(options);
 
 % param.n=1000; %演化格点维度
-param.m=3; %函数格点维度
+param.m=2; %函数格点维度
 % param.x0=[rand,rand]; %初始点
 % param.times=1; %噪声平均次数
 options.view=[-15,60]; %画图角度
 % options.map=jet; %色系
 
 Koopman_natural(fun,param,options);
+
+function [fun,param,options]=Intermittency(options)
+fun=@(x)x./(1-x)*(x<=0.5)+(1-x)/x*(x>0.5);
+param.n=1000;
+param.m=2;
+param.x0=rand;
+param.times=1;
+end
+
+function [fun,param,options]=Tent_map(options)
+fun=@(x)x./(1-x)*(x<=0.5)+(1-x)/x*(x>0.5);
+param.n=1000;
+param.m=2;
+param.x0=rand;
+param.times=1;
+end
 
 
 function [fun,param,options]=Henon_map(options)

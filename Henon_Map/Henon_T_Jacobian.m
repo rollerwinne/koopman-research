@@ -5,9 +5,9 @@ n=20;q=1;a=1.4;b=0.3;
 % x1=x0(:)';
 % y1=y0(:)';
 %% only on period orbrits
-load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
-for choose=1:4
-    T=7;
+load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+for choose=1
+    T=4;
     x1=P{T}(choose,mod(1:end,2)==1);
     y1=P{T}(choose,mod(1:end,2)==0);
     %%
@@ -46,7 +46,7 @@ for choose=1:4
         DX2(i)=F(1,2);
         DY2(i)=F(2,2);
     end
-    save(['.\data\Henon_victor_field_T' num2str(T) '_choose' num2str(choose) '.mat'],'T','x1','y1','DX1','DX2','DY1','DY2','color1','color2');
+    save(['./data/Henon_victor_field_T' num2str(T) '_choose' num2str(choose) '.mat'],'T','x1','y1','DX1','DX2','DY1','DY2','color1','color2');
     %subplot(3,3,T)
     figure(choose)
     hold on

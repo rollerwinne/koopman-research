@@ -14,15 +14,19 @@ for i=1:length(x)
     D=dfgxy(x(i),y(i));
     [F,L]=eig(D);
     L=diag(L);
-    if L(1)>=0
+    if abs(L(1))>1
         color1{i}='blue';
-    else
+    elseif abs(L(1))<1
         color1{i}='red';
-    end
-    if L(2)>=0
-        color2{i}='blue';
     else
+        color1{i}='green';
+    end
+    if abs(L(2))>1
+        color2{i}='blue';
+     elseif abs(L(2))<1
         color2{i}='red';
+    else
+        color2{i}='green';
     end
     DX1(i)=F(1,1);
     DY1(i)=F(2,1);

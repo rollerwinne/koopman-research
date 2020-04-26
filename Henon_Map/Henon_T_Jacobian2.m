@@ -1,6 +1,6 @@
 clear all;clc;%close all
 q=1;a=1.4;b=0.3;
-load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
 T=7;dot=2;
 choose=1;
 x0=P{T}(choose,mod(1:end,2)==1);
@@ -18,13 +18,13 @@ g_inv=@(x,y)x-1+a/b/b*y.*y;
 dfgxy=@(x,y)[-2*a*x,1;b,0];
 
 s=jet(length(x0));
-str=['.\temp\test.fig'];
+str=['./temp/test.fig'];
 uiopen(str,1);  % 本征函数图像
 colormap(gray)
 hold on
 plot3(x0,y0,0.021*ones(length(x0),1),'r*')
 
-load(['.\data\Henon_victor_field_T4.mat']);
+load(['./data/Henon_victor_field_T4.mat']);
 hold on
 for i=1:length(x1)
     quiver3(x1(i),y1(i),0.021,DX1(i),DY1(i),0,'color',color1{i},'AutoScaleFactor',0.2);

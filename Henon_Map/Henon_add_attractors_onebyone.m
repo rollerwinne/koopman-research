@@ -1,6 +1,6 @@
 clear;clc;close all
-load('.\data\Henon_attractors_data_xy.mat'); % 吸引子数据载入
-load('.\data\Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
+load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入
+load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat'); % 周期轨道数据载入
 i_fig=[6,9,10,11,17,18,19];
 t=[12,10,7,12,7,4,7];
 choose=1;
@@ -8,7 +8,7 @@ choose=1;
 % T=12;
 
 for k=1:length(t)
-    str=['.\temp\Henon_eigenfunctions_complex_figure' num2str(i_fig(k)) '.fig'];
+    str=['./temp/Henon_eigenfunctions_complex_figure' num2str(i_fig(k)) '.fig'];
     uiopen(str,1);  % 本征函数图像
     for i=1:4
         subplot(2,2,i)
@@ -30,7 +30,7 @@ for k=1:length(t)
 %                 end
 %             end
 %         end
-        load(['.\data\Henon_victor_field_T' num2str(t(k)) '.mat']);
+        load(['./data/Henon_victor_field_T' num2str(t(k)) '.mat']);
         hold on
         for i=1:length(x1)   %周期点对应的本征向量
 %             if strcmp(color1{i},'blue'); color1{i}='white'; end
@@ -46,6 +46,6 @@ for k=1:length(t)
         axis equal
     end
     drawnow
-    str=['.\temp\Henon_eigenfunctions_attractors_complex_figure' num2str(i_fig(k)) '.png'];
+    str=['./temp/Henon_eigenfunctions_attractors_complex_figure' num2str(i_fig(k)) '.png'];
     saveas(hh,str)
 end
