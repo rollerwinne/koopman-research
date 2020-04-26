@@ -58,7 +58,7 @@ fun=@(x)[awgn(  x(2)  ,10*log10(1/D));
 
 param.n=1000;
 param.m=2;
-param.x0=[-1.596,-0.584,0.553];
+param.x0=[-1.596,-0.854,0.553];
 param.times=1;
 options.view=[-15,60];
 options.map=jet;
