@@ -27,12 +27,6 @@ for m=M
     maxh=opt.subp(1)*opt.subp(2);
     h=1:min(maxh,length(D));
     
-    %     if cal==1
-    %         h=h(1);
-    %     else
-    %         h=h(min(opt.multim.choose,end));
-    %     end
-    %    H=h(min(opt.multim.choose,end));
     if opt.multim.enabled
         H=h(min(opt.multim.choose,end));
     else
@@ -86,6 +80,8 @@ for m=M
     h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
     maxh=opt.subp(1)*opt.subp(2);
     h=1:min(maxh,length(D));
+    [~,idx]=sort(abs(D(h)));
+    h=h(idx);
 
     if opt.multim.enabled
         H=h(min(opt.multim.choose,end));
@@ -180,6 +176,9 @@ if param.natural.enabled
     plotsort(x0,A);
 else
     plot(x0,A);
+end
+if opt.boundary.enabled
+    D1_boundary_draw(opt.boundary.fun,1:min((m+1),9),(max(A)+min(A))/2,opt.boundary.color);
 end
 
 d_abs=abs(D(h));

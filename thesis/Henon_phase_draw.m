@@ -44,10 +44,10 @@ end
 %% Draw Eigenfunctions
 figure_num=9;
 attachments=[];
-for i=6%1:min(figure_num,length(h))
-    figure(i)
-    set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
-    %subplot(3,3,i)
+for i=1:min(figure_num,length(h))
+    %figure(i)
+    %set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+    subplot(3,3,i)
     %tightsub(3,3,i,0.8)
     [str_nm,str_lamb,str_log,str_Terr,T]=titlestr(D(h(i)),a,b,m,n,md);
     for j=1
@@ -72,12 +72,12 @@ for i=6%1:min(figure_num,length(h))
         end
         surf(X,Y,Z);
         %scatter3(x_k(:),y_k(:),Z(:),3,Z(:));%scatter3(X,Y,Z,S,C), 前三个参数是坐标，S是散点的size,C是颜色参数
-        hold on
+        %hold on
         %Henon_attractors_draw([0 1 0],rate(Z,1),true);
-        Henon_T_draw(7,3,rate(Z,1.01));
-        Henon_T_linear_draw(7,3,rate(Z,1.02));
-        Henon_stable_manifold(7,3,rate(Z,1.03));
-        rz=inter(X,Y,Z,10,1);
+%         Henon_T_draw(7,3,rate(Z,1.01));
+%         Henon_T_linear_draw(7,3,rate(Z,1.02));
+%         Henon_stable_manifold(7,3,rate(Z,1.03));
+%         rz=inter(X,Y,Z,10,1);
         %Henon_iteration_forward_reverse;
         if j==1
             %ylabel('real')
@@ -90,9 +90,11 @@ for i=6%1:min(figure_num,length(h))
         end
         shading interp
         colorbar
-        colormap(pink)
-        xlim([-1.5,1.5])
-        ylim([-1.5,1.5])
+        colormap(jet)
+%         xlim([-1.5,1.5])
+%         ylim([-1.5,1.5])
+        %axis([-1.5 1.5 -1.5 1.5])
+        axis equal
         view(0,90)
         %view(-15,60)
         

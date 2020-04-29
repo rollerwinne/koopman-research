@@ -3,7 +3,7 @@ clc;close all;clear
 tic;timestart=char(datetime('now'));
 %disp('The running program is from ZC. 么么哒')
 %% Parameter settings
-a=1.4;b=0.3;n=2000;m=8;
+a=1.4;b=0.3;n=2000;m=4;
 times=1;d=0;
 
 Attr=load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入
@@ -116,7 +116,7 @@ for i=1:min(figure_num,length(h))
         colorbar
         colormap(jet)
     end
-    maketitle(d,a,b,m,n);
+    maketitle(D(h(i)),a,b,m,n);
     str=['./temp/Henon_eigen_natural_n',num2str(n),'m',num2str(m),'_figure',num2str(i)];
     % saveas(hh,[str,'.fig']);
     %saveas(gcf,[str,'.png']);

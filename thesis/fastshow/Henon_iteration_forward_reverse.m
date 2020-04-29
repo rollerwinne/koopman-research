@@ -10,14 +10,14 @@ for m=20
     %subplot(3,3,(m+1)/3)
     hold on
     for i=1:m
-        x_temp=f(x,y);
-        y_temp=g(x,y);
+        x_temp=f_inv(x,y);
+        y_temp=g_inv(x,y);
         x=x_temp;
         y=y_temp;
     end
     for i=1:m
-        x_temp=f_inv(x,y);
-        y_temp=g_inv(x,y);
+        x_temp=f(x,y);
+        y_temp=g(x,y);
         x=x_temp;
         y=y_temp;
     end

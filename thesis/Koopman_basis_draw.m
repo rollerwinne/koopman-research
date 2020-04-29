@@ -33,8 +33,7 @@ options.save.suffix='.png';
 end
 
 function [fun,param,options]=Logistic_map(options)
-alpha=1/2;
-D=0;
+alpha=1/2;D=0;
 fun=@(x)awgn((x<alpha)./alpha.*x+(x>=alpha).*(1/(1-alpha)-1/(1-alpha)*x),10*log10(1/D));
 
 param.dim=1;
@@ -55,6 +54,7 @@ function options=default_options
 options.all=true;
 options.view=[-15,60];
 options.map=jet;
+
 options.save.enabled=false;
 options.save.path='./temp';
 options.save.pre='Tent_Koopman';

@@ -66,11 +66,12 @@ A_abs=abs(A);
 
 switch dim
     case 1
+        [~,idx]=sort(x0);
         subplot(dim,2,1)
-        plot(x0,A_real);
+        plot(x0(idx),A_real(idx));
         ylabel('x-real');
         subplot(dim,2,2)
-        plot(x0,A_abs);
+        plot(x0(idx),A_abs(idx));
         ylabel('x-abs');
     case 2
         x_str=['x','y'];
@@ -139,6 +140,7 @@ colormap(opt.map)
 end
 
 function graph_control_3D(opt)
+view(opt.view)
 colorbar
 colormap(opt.map)
 end
