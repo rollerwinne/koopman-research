@@ -2,7 +2,7 @@
 %set=[];
 %err=0.2;
 %set=belong(2.1,set,err);
-function auto_level(f,xp,yp,A,err)
+function auto_level(f,xp,yp,A,err,delta)
 bound=0.5;
 res=[];
 for i=1:length(xp)
@@ -10,7 +10,7 @@ for i=1:length(xp)
     count=1;
     while(~equals(temp,bound,err))
         if count>15
-            hh=text(xp(i),yp(i),'');
+            hh=text(xp(i),yp(i)+delta,'');
             break;
         end
         count=count+1;
@@ -18,7 +18,7 @@ for i=1:length(xp)
     end
     if count<=15
         res(i)=count;
-        hh=text(xp(i),yp(i),num2str(count));
+        hh=text(xp(i)-0.015,yp(i)+delta,num2str(count));
     end
 end
 end

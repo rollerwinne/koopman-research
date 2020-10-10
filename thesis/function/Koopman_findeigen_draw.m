@@ -11,9 +11,10 @@ x00(2:2:end)=X_para;
 x_base=linspace(0,1,n);
 %plot(x_base,X)
 % hold on
-hh=plot(x_base,K*x);
+hh=plot(x_base,K*x/norm(K*x,2),'LineWidth',2);
 % legend('ะก','ด๓')
-title([{lambda_str(lambda)};{['\mu=',num2str(miu),';\nu=',num2str(nu),';fval=',num2str(fval),';exitflag=',num2str(exitflag)]}]);
+title([{lambda_str(lambda)};{['\mu=',num2str(miu),';\nu=',num2str(nu),';fval=',num2str(fval)]}]);%,';exitflag=',num2str(exitflag)
+%title(lambda_str(lambda));
 end
 
 function str=lambda_str(lambda)

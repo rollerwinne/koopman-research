@@ -1,48 +1,27 @@
 %% Initialization
-%clc;close all;clear
-clear;clc;
+clc;close all;clear
+%clc;clear
 tic;timestart=char(datetime('now'));
 %disp('The running program is from ZC. 么么哒')
 %% Parameter settings
-a=1.4;b=0.3;
-%a=1.0;b=0.54;
-n=10000;m=4;
+a=1.4;b=0.3;n=10000;m=3;itern=11;
 times=1;d=0;
-Iter=m;
+Iter=m-1;
 s=hsv(Iter);
-nearby=80;%100:25
 
 Attr=load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入
 x_attr=Attr.x;y_attr=Attr.y;
 Peri=load('./data/Henon_period_orbrits_P_1_0.3_-1_-0.3.mat');
 P=Peri.P;
-xy_bound=[1.272933828112852,-0.012403304471461];
 f=@(x,y)y+1-a.*x.*x;
 g=@(x,y)b*x;
-x0=zeros(1,n);
-y0=zeros(1,n);
 
-idx=find(~isinf(x_attr));
-index=floor(0.27*length(idx));%0.27
-x_iter=x_attr(idx(index));
-y_iter=y_attr(idx(index));
+K=zeros(2*n,m);L=K;
+for j=1:m
+    K(:,j)=Henon_attractors_flow(n,itern+j-1);
+    L(:,j)=Henon_attractors_flow(n,itern+j);
+end
 
-K_x=[];L_x=[];K=zeros(2*n,m);L=K;
-for i=1:m+n
-    K_x=[K_x;x_iter;y_iter];
-    x_temp=[];y_temp=[];
-    for k=1:times %每个点演化迭代times次
-        x_temp=[x_temp,f(x_iter,y_iter)];
-        y_temp=[y_temp,g(x_iter,y_iter)];
-    end
-    x_iter=sum(x_temp)/times;%取平均
-    y_iter=sum(y_temp)/times;%取平均
-    L_x=[L_x;x_iter;y_iter];
-end
-for i=1:m
-    K(:,i)=K_x(2*i-1:2*i-1+2*n-1);
-    L(:,i)=L_x(2*i-1:2*i-1+2*n-1);
-end
 
 
 %% Caculate Eigenfunction
@@ -72,13 +51,12 @@ h=h(idx);
 %% Draw Eigenfunctions
 [fn1,fn2]=subfignum(length(h));
 figure_num=9;
-%myfigure;
-tightsub(2,2,m,0.8);
+%tightsub(3,3,m,0.8);
 %set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
-for i=1%:min(figure_num,length(h))
+for i=1:min(figure_num,length(h))
     %subplot(fn1,fn2,i)
-    %figure;
-    for j=1
+    myfigure;
+    for j=2
         X=K(1:2:end,1);
         Y=K(2:2:end,1);
         Z_temp=K*F(:,h(i));
@@ -92,27 +70,24 @@ for i=1%:min(figure_num,length(h))
             Z=real(Z_temp(2:2:end,1));
         end
         scatter3(X(:),Y(:),Z(:),3,Z(:));
-        hold on
-        R=Henon_findpeaks_draw(X(:),Y(:),Z(:),'black',nearby);
         z_min=min(Z(:));z_max=max(Z(:));
-        %Henon_findpeaks_draw(X(:),Y(:),Z(:),'',param.findpeak.nearby);
-
-        %plot3([Attr.x1;Attr.x2],[Attr.y1;Attr.y2],rate(Z,0.01)*ones(2,1),'r*');
+        R=Henon_flowpeaks_draw(X(:),Y(:),Z(:),'black');
+        hold on
+        plot3([Attr.x1;Attr.x2],[Attr.y1;Attr.y2],rate(Z,0.01)*ones(2,1),'r*');
 
         for iter=1:Iter
-            [~,Q,T]=Henon_boundary_draw(-iter+1,rate(Z,0.01),rate(Z,1.05),s(iter,:),false);
+            disp([num2str(i),':',num2str(-iter+1)])
+            [Q,~]=Henon_boundary_draw(-iter+1,rate(Z,0.01),rate(Z,1.05),s(iter,:));
+            res=find_nearest(Q,R);
+            disp(res);
         end
-        diff=find_nearest(T,R);
-        disp(diff);
-        disp(['average:',num2str(mean(diff(:,5)))])
+        
 
         xlim([-1.5,1.5])
         ylim([-1.5,1.5])
         if j==1
             scatter3(x_attr(:),y_attr(:),z_min*ones(length(x_attr(:)),1),3,min(Z(:))*ones(length(x_attr(:)),1));%画吸引子
-            %scatter3(x_attr(:),y_attr(:),z_max*ones(length(x_attr(:)),1),3,min(Z(:))*ones(length(x_attr(:)),1));%画吸引子
             view(-15,60)
-            %view(0,90)
         elseif j==2
             scatter3(x_attr(:),y_attr(:),z_min*ones(length(x_attr(:)),1),3,min(Z(:))*ones(length(x_attr(:)),1));%画吸引子
             view(-15,60)
@@ -121,25 +96,15 @@ for i=1%:min(figure_num,length(h))
         elseif j==4
             view(0,90)
         end
-        xlabel('x');ylabel('y');he=zlabel('$\phi\left(x\right)$');set(he,'Interpreter','latex');
         d_abs=abs(D(h(i)));
         d_angle=angle(D(h(i)))/pi*180;
-        title(['m=',num2str(m),', \lambda=',num2str(d_abs),'∠' num2str(d_angle),'°']);
+        title(['m=',num2str(m),' \lambda=',num2str(d_abs),'∠' num2str(d_angle),'°']);
         shading interp
         colorbar
         colormap(jet)
     end
-%     figure;
-%     plot(diff(:,1),diff(:,2),'ro');
-%     hold on
-%     plot(diff(:,3),diff(:,4),'bo');
-%     xlim([-1.5,1.5])
-%     ylim([-1.5,1.5])
-    %maketitle(d,a,b,m,n);
-    %saveas(gcf,[str,'.png']);
-    % attachments{i}=[str,'.png'];
+
 end
-sciformat(15)
 str=['Eigenfunction of Henon Map with Natural Basis (n=',num2str(n),',m=',num2str(m),')'];
 %str=['Eigenfunction and Boundarys of Henon Map with Natural Basis (n=',num2str(n),')'];
 %suptitle(str)

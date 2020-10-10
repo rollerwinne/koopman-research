@@ -42,13 +42,14 @@ if length(D)<=9
 end
 %h=1:min(9,length(D));
 %% Draw Eigenfunctions
-figure_num=9;
+figure_num=4;
 attachments=[];
+myfigure;
 for i=1:min(figure_num,length(h))
     %figure(i)
     %set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
-    subplot(3,3,i)
-    %tightsub(3,3,i,0.8)
+    %subplot(2,2,i)
+    tightsub(2,2,i,0.785)
     [str_nm,str_lamb,str_log,str_Terr,T]=titlestr(D(h(i)),a,b,m,n,md);
     for j=1
         %subplot(2,2,j)
@@ -102,15 +103,17 @@ for i=1:min(figure_num,length(h))
     %str='Eigenfunctions of Henon Map with Gauss Basis';
     % suptitle([str,' (n=',num2str(n),'^2,m=',num2str(m),'*2+1)']);
     %suptitle({[str,' (n=',num2str(n),',m=',num2str(m),'^2,d_j=',num2str(3/md,'%.4f'),')'];str_lamb});
+    xlabel('x'),ylabel('y')
+    sciformat(15);
     title(str_lamb);
     %xlabel(['T=',num2str(T)]);
     %saveas(gcf,['./temp/Henon_eigen_Gauss_n100m50md45_figure',num2str(i),'.png'])
 end
 % str='Eigenfunctions of Henon Map on Attractors with Gauss Basis';
-str='Eigenfunctions and Stable Manifold of Henon Map';
+%str='Eigenfunctions and Stable Manifold of Henon Map';
 % suptitle([str,' (n=',num2str(n),'^2,m=',num2str(m),'*2+1)']);
-suptitle([str,' (n=',num2str(n),'^2,m=',num2str(m),'^2,d_j=',num2str(3/md,'%.4f'),') (T=7)']);
-% saveas(gcf,['./temp/Henon_eigen_Gauss_manifold_n100m',num2str(m),'T7_3.png'])
+%suptitle([str,' (n=',num2str(n),'^2,m=',num2str(m),'^2,d_j=',num2str(3/md,'%.4f'),') (T=7)']);
+%saveas(gcf,['./temp/Henon_eigen_Gauss_manifold_n100m',num2str(m),'T7_3.png'])
 
 function [str_nm,str_lamb,str_log,str_Terr,T]=titlestr(d,~,b,m,n,md)
 d_abs=abs(d);

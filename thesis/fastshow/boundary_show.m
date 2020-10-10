@@ -1,11 +1,14 @@
 clear
-load('logistic_boundary_norepeat_x0.mat', 'X')
+load('tent_boundary_norepeat_x0.mat', 'X')
 for i=1:length(X)
     Y{i}=sort(X{i});
 end
-draw1D(Y,1,5);
-title('Boundary of Logistic Map (x=0)')
-saveas(gcf,'./temp/Logistic_boundarys_x0.png')
+draw1D(Y,1,6);
+%hold on
+%drawBoundary(Y,1,5)
+%title('Boundary of Logistic Map (x=0)')
+%saveas(gcf,'./temp/Tent_boundary.png')
+sciformat;
 
 function draw1D(X,m,n)
 yshift=0.05;

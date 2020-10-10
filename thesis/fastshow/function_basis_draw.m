@@ -1,14 +1,38 @@
-subplot(221)
-rect_draw
-subplot(222)
-gauss_draw
-subplot(223)
-fourier_draw
-subplot(224)
-legendre_draw
-set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+close all
+fontsize=20;
+issave=true;
 
-function rect_draw
+
+%subplot(221)
+figure
+rect_draw(fontsize)
+if issave
+    saveas(gcf,'./temp/function_basis_rect.png')
+end
+
+%subplot(222)
+figure
+gauss_draw(fontsize)
+if issave
+    saveas(gcf,'./temp/function_basis_gauss.png')
+end
+
+%subplot(223)
+figure
+fourier_draw(fontsize)
+if issave
+    saveas(gcf,'./temp/function_basis_four.png')
+end
+
+%subplot(224)
+figure
+legendre_draw(fontsize)
+if issave
+    saveas(gcf,'./temp/function_basis_legen.png')
+end
+%set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+
+function rect_draw(fontsize)
 n=1000;m=4;
 x0=linspace(0,1,n);
 textpos=[linspace(1/2/m,1-1/2/m,m);1.8*ones(1,m)];
@@ -16,12 +40,13 @@ for i=1:m
     hold on
     g=Rectangle(i,m);
     plot(x0,g(x0));
-    text(textpos(1,i)-0.03,textpos(2,i),['g_{',num2str(i),'}(x)'])
+    text(textpos(1,i)-0.03,textpos(2,i),['g_{',num2str(i),'}(x)'],'FontSize',fontsize)
 end
-title('Rectangle Function Basis (m=4)')
+%title('Rectangle Function Basis (m=4)')
+sciformat;
 end
 
-function gauss_draw
+function gauss_draw(fontsize)
 n=1000;m=6;
 x0=linspace(0,1,n);
 textpos=[linspace(1/2/m,1-1/2/m,m);1.8*ones(1,m)];
@@ -29,12 +54,14 @@ for i=1:m
     hold on
     g=Gauss(i,m);
     plot(x0,g(x0));
-    text(textpos(1,i)-0.03,textpos(2,i),['g_{',num2str(i),'}(x)'])
+    text(textpos(1,i)-0.03,textpos(2,i),['g_{',num2str(i),'}(x)'],'FontSize',fontsize)
 end
-title('Gauss Function Basis (m=6)')
+%title('Gauss Function Basis (m=6)')
+set(gca,'FontSize',fontsize);
+sciformat;
 end
 
-function fourier_draw
+function fourier_draw(fontsize)
 n=1000;m=5;
 x0=linspace(0,1,n);
 textpos=[0.3,0.7;
@@ -57,12 +84,14 @@ for i=1:m
     hold on
     g=Fourier(i);
     plot(x0,g(x0),'Color',colors(i,:));
-    text(textpos(i,1)-0.04,textpos(i,2)+0.01,['$g_{',num2str(i),'}(x)=',texts{i},'$'],'interpreter','latex');
+    %text(textpos(i,1)-0.04,textpos(i,2)+0.01,['$g_{',num2str(i),'}(x)=',texts{i},'$'],'interpreter','latex');
+    text(textpos(i,1)-0.04,textpos(i,2)+0.01,['$g_{',num2str(i),'}(x)$'],'interpreter','latex','FontSize',fontsize);
 end
-title('Fourier Function Basis (m=5)')
+%title('Fourier Function Basis (m=5)')
+sciformat;
 end
 
-function legendre_draw
+function legendre_draw(fontsize)
 n=1000;m=5;
 x0=linspace(-1,1,n);
 % textpos=[
@@ -83,9 +112,10 @@ for i=0:m
     hold on
     g=Legendre(i);
     plot(x0,g(x0));
-    text(textpos(i+1,1),textpos(i+1,2),['P_{',num2str(i),'}(x)'])
+    text(textpos(i+1,1),textpos(i+1,2),['P_{',num2str(i),'}(x)'],'FontSize',fontsize)
 end
-title('Legendre Function Basis (m=6)')
+%title('Legendre Function Basis (m=6)')
+sciformat;
 end
 
 function g = Rectangle(i,m)

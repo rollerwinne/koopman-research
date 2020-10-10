@@ -10,12 +10,12 @@ y1=0.18940634312685141350446807015071;
 y2=-0.33940634312685141350446807015071;
 % [x,y]=meshgrid(-1.5:0.01:1.5);
 [x,y]=meshgrid(linspace(-1.5,1.5,100));
-x0=-1.4;y0=-1;
+x0=rand;y0=rand;
 for i=1:30
-    figure(i)
-    hold on
-    plot(x,y,'b.')
-    plot(x0,y0,'r*')
+%     figure(i)
+%     hold on
+%     plot(x,y,'b.')
+%     plot(x0,y0,'r*')
     x_temp=f(x0,y0);
     y_temp=g(x0,y0);
     x0=x_temp;
@@ -26,9 +26,12 @@ for i=1:30
     x=x_temp;
     y=y_temp;
 end
+hold on
+plot(x,y,'b.')
+plot(x0,y0,'r*')
 x=x(:);
 y=y(:);
 idx=find(isinf(x) | isinf(y));
 x(idx)=[];y(idx)=[];
 
-save('./data/Henon_attractors_n6245.mat','x','y','x1','x2','y1','y2');
+%save('./data/Henon_attractors_n6245.mat','x','y','x1','x2','y1','y2');

@@ -10,18 +10,19 @@ for m=20
     %subplot(3,3,(m+1)/3)
     hold on
     for i=1:m
-        x_temp=f_inv(x,y);
-        y_temp=g_inv(x,y);
-        x=x_temp;
-        y=y_temp;
-    end
-    for i=1:m
         x_temp=f(x,y);
         y_temp=g(x,y);
         x=x_temp;
         y=y_temp;
     end
-    plot3(x,y,0.04*ones(100,100),'b.')
+    for i=1:m
+        x_temp=f_inv(x,y);
+        y_temp=g_inv(x,y);
+        x=x_temp;
+        y=y_temp;
+    end
+    %plot3(x,y,0.04*ones(100,100),'b.')
+    plot(x,y,'b.')
     axis([-1.5 1.5 -1.5 1.5])
     %title(m)
 end

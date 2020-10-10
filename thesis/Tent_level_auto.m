@@ -7,13 +7,13 @@ d=0;%噪声强度,信噪比的倒数
 
 x0=linspace(0,1,n);
 %[f,seq,sx]=Tents_function(7,d);           % Tents map
-[f,seq,sx]=Tents_function(3,d);           % Tents map low()
-% f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/d)); % Tent map with noise
+%[f,seq,sx]=Tents_function(3,d);           % Tents map low()
+f=@(x)awgn(1-2*abs(x-1/2),10*log10(1/d)); % Tent map with noise
 % f=@(x)1-2*abs(x-1/2);                     % Tent map
-% f=@(x)awgn(4.*x.*(1-x),10*log10(1/d));
-% S=load('logistic_boundary_norepeat_x0.mat');
-% seq=[0,0.5,1];
-% sx=[S.X{4},S.X{4};S.X{5}];
+%f=@(x)awgn(4.*x.*(1-x),10*log10(1/d));
+S=load('tent_boundary_norepeat_x0.mat');
+seq=[0,0.5,1];
+sx=[S.X{4},S.X{4};S.X{5}];
 
 figure(1)
 plot(x0,f(x0));
@@ -55,21 +55,22 @@ for m=M
     for i=1:min(length(h),9)
         A=real(K*F(:,h(i)));
         subplot(fn1,fn2,i)
-        plot(x0,A);
+        plot(x0,A,'k','LineWidth',2);
         hold on
         [xp,yp]=draw_peaks(A,x0);%画峰
         [xt,yt]=draw_trough(A,x0);%画谷
-        draw_boundary(min(A),max(A),sx);%画边界点
+        %draw_boundary(min(A),max(A),sx);%画边界点
         plot(seq,min(A),'r*');
         %auto_level(f,[xp,xt],1e-2);
-        auto_level(f,xp,yp,A,0.08);
-        auto_level(f,xt,yt,A,0.08);
+        auto_level(f,xp,yp,A,0.08,0.06*(max(A)-min(A)));
+        auto_level(f,xt,yt,A,0.08,0.06*(max(A)-min(A)));
         
         d_abs=abs(D(h(i)));
         d_angle=angle(D(h(i)))/pi*180;
         str1=['m=',num2str(m),'; \lambda='];
         str2=[num2str(d_abs),'∠',num2str(d_angle),'°'];
         title([str1,str2]);
+        sciformat(15)
     end
     saveas(gcf,['temp/Tent_auto_level_n1000_m',num2str(m),'.png'])
 end
@@ -100,36 +101,36 @@ colorbar
 title('波谷')
 end
 
-function [xt,yt]=draw_trough(A,x0,seq,sx)
+function [xt,yt]=draw_trough(A,x0,fsize,seq,sx)
 [pks,locs] = findpeaks(-A);
 xt=x0(locs);
 yt=A(locs);
 plot(xt,yt,'s');
 hold on
-if (nargin>2)
+if (nargin>3)
     [m,n]=size(sx);
     combine=[reshape(seq,length(seq),1);reshape(sx,m*n,1)];
     for i=1:length(xt)
         minindex=find(abs(abs(xt(i)-combine)) - min(abs(xt(i)-combine))<1e-10)
         diff=combine(minindex(1))-xt(i)
-        text(xt(i),yt(i),num2str(abs(diff),'%5.4f'),'VerticalAlignment','bottom','rotation',90);
+        text(xt(i),yt(i),num2str(abs(diff),'%5.4f'),'FontSize',fsize,'VerticalAlignment','bottom','rotation',90);
     end
 end
 end
 
-function [xp,yp]=draw_peaks(A,x0,seq,sx)
+function [xp,yp]=draw_peaks(A,x0,fsize,seq,sx)
 [pks,locs] = findpeaks(A);
 xp=x0(locs);
 yp=A(locs);
 plot(xp,yp,'s');
 hold on
-if (nargin>2)
+if (nargin>3)
     [m,n]=size(sx);
     combine=[reshape(seq,length(seq),1);reshape(sx,m*n,1)];
     for i=1:length(xp)
         minindex=find(abs(abs(xp(i)-combine)) - min(abs(xp(i)-combine))<1e-10)
         diff=combine(minindex(1))-xp(i)
-        text(xp(i),yp(i),num2str(abs(diff),'%5.4f'),'VerticalAlignment','bottom','rotation',90);
+        text(xp(i),yp(i),num2str(abs(diff),'%5.4f'),'FontSize',fsize,'VerticalAlignment','bottom','rotation',90);
     end
 end
 end

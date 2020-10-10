@@ -68,22 +68,27 @@ switch dim
     case 1
         [~,idx]=sort(x0);
         subplot(dim,2,1)
-        plot(x0(idx),A_real(idx));
-        ylabel('x-real');
+        plot(x0(idx),A_real(idx),'LineWidth',2);
+        sciformat
+        xlabel('x-real');
         subplot(dim,2,2)
-        plot(x0(idx),A_abs(idx));
-        ylabel('x-abs');
+        plot(x0(idx),A_abs(idx),'LineWidth',2);
+        xlabel('x-abs');
+        sciformat
     case 2
         x_str=['x','y'];
         % scatter3(X(:),Y(:),Z(:),3,Z(:));
         for i=1:dim
             subplot(dim,2,i*2-1)
             scatter3(x0(1:dim:end),x0(2:dim:end),A_real(i:dim:end),3,A_real(i:dim:end));
-            ylabel([x_str(i),'-real']);
+            if param.findpeak.enabled
+                param.R=Henon_findpeaks_draw(x0(1:dim:end),x0(2:dim:end),A_real(i:dim:end),param.findpeak.color,param.findpeak.nearby);
+            end
+            xlabel([x_str(i),'-real']);
             graph_control_2D(opt);
             subplot(dim,2,i*2)
             scatter3(x0(1:dim:end),x0(2:dim:end),A_abs(i:dim:end),3,A_abs(i:dim:end));
-            ylabel([x_str(i),'-abs']);
+            xlabel([x_str(i),'-abs']);
             graph_control_2D(opt);
         end
     case 3
@@ -91,21 +96,25 @@ switch dim
         for i=1:dim
             subplot(2,dim,i)
             scatter3(x0(1:dim:end),x0(2:dim:end),x0(3:dim:end),3,A_real(i:dim:end));
-            ylabel([x_str(i),'-real']);
+            xlabel('x');ylabel('y');zlabel('z');
+            title([x_str(i),'-real']);
+            %Henon_cms_draw('black');
             graph_control_3D(opt);
             subplot(2,dim,i+dim)
             scatter3(x0(1:dim:end),x0(2:dim:end),x0(3:dim:end),3,A_abs(i:dim:end));
-            ylabel([x_str(i),'-abs']);
+            xlabel('x');ylabel('y');zlabel('z');
+            title([x_str(i),'-abs']);
+            %Henon_cms_draw('black');
             graph_control_3D(opt);
         end
     otherwise
         for i=1:dim
             subplot(2,dim,i)
             plot(x0(i:dim:end),A_real(i:dim:end));
-            ylabel(['x_',num2str(i),'-real']);
+            xlabel(['x_',num2str(i),'-real']);
             subplot(2,dim,i+dim)
             plot(x0(i:dim:end),A_real(i:dim:end));
-            ylabel(['x_',num2str(i),'-abs']);
+            xlabel(['x_',num2str(i),'-abs']);
         end
 end
 
@@ -123,7 +132,7 @@ h=gcf;
 if opt.save.enabled
     str=[opt.save.path,'/',opt.save.pre,param_str(param),'figure',num2str(param.figure_num),opt.save.suffix];
     disp(str);
-    %saveas(h,str);
+    saveas(h,str);
 end
 end
 
@@ -137,10 +146,12 @@ view(opt.view)
 shading interp
 colorbar
 colormap(opt.map)
+sciformat
 end
 
 function graph_control_3D(opt)
 view(opt.view)
 colorbar
 colormap(opt.map)
+sciformat
 end

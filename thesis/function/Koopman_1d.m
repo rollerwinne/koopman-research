@@ -1,4 +1,7 @@
-function [K,L]=Koopman_basis_multi(fun,param,opt)
+function [K,L]=Koopman_1d(fun,param,opt)
+if length(param.m)>1
+    param.multim.enabled=true;
+end
 if param.natural.enabled
     param.basis='natural';
     [K,L]=Koopman_natural(fun,param,opt);
@@ -26,6 +29,8 @@ for m=M
     h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
     maxh=opt.subp(1)*opt.subp(2);
     h=1:min(maxh,length(D));
+    [~,idx]=sort(abs(D(h)),'descend');
+    h=h(idx);
     
     if opt.multim.enabled
         H=h(min(opt.multim.choose,end));
@@ -41,7 +46,7 @@ for m=M
         plotAll(param,opt);
     end
 end
-suptitle(opt.title);
+%suptitle(opt.title);
 
 saveit(param,opt);
 end
@@ -54,8 +59,7 @@ times=param.times;
 dim=length(x0);
 
 cal=1;
-figure;
-set(gcf,'outerposition',get(0,'screensize')-[0,0,1440*0.3,900*0.2]);
+myfigure;
 for m=M
     x_iter=param.natural.x0;
     K_x=zeros(dim*(m+n),1);L_x=K_x;K=zeros(dim*n,m);L=K;
@@ -80,7 +84,7 @@ for m=M
     h=find(abs(D)>0.01 & abs(D)<1.3 & imag(D)>-1e-6);
     maxh=opt.subp(1)*opt.subp(2);
     h=1:min(maxh,length(D));
-    [~,idx]=sort(abs(D(h)));
+    [~,idx]=sort(abs(D(h)),'descend');
     h=h(idx);
 
     if opt.multim.enabled
@@ -97,7 +101,7 @@ for m=M
         plotAll(param,opt);
     end
 end
-suptitle(opt.title);
+%suptitle(opt.title);
 saveit(param,opt);
 end
 
@@ -173,34 +177,52 @@ end
 subplot(opt.subp(1),opt.subp(2),figure_num)
 
 if param.natural.enabled
-    plotsort(x0,A);
+    [~,x0,A]=plotsort(x0,A,'k');
 else
-    plot(x0,A);
+    plot(x0,A,'k','LineWidth',2);
+end
+if opt.peak.enabled
+   [xp,yp]=draw_peaks(A,x0);
+   [xt,yt]=draw_trough(A,x0);
 end
 if opt.boundary.enabled
-    D1_boundary_draw(opt.boundary.fun,1:min((m+1),9),(max(A)+min(A))/2,opt.boundary.color);
+    %D1_boundary_draw(opt.boundary.fun,1:min((m+1),9),(max(A)+min(A))/2,opt.boundary.color);
+    bound=boundary_draw(opt.boundary.fun,1,min(m+1,6),(max(A)+min(A))/2);
 end
+% disp('-----m=')
+% m
+% disp('bound')
+% bound(3:end)'
+% [~,hi]=sort(bound(3:end));
+% disp('peaks')
+% temp=sort([xp;xt]);
+% E(hi)=temp;
+% E=E(:);
+% E
+% disp('-----end')
 
+%xlabel('x');he=ylabel('$\phi\left(x\right)$');set(he,'Interpreter','latex');
+set(gca,'yticklabel',num2str(get(gca,'YTick')','%.2f'));
 d_abs=abs(D(h));
 d_angle=angle(D(h))/pi*180;
-str1=['m=',num2str(m),'; \lambda='];
+str1=['m=',num2str(m),', \lambda='];
 str2=[num2str(d_abs),'б╧' num2str(d_angle),'бу'];
 title([str1,str2]);
-
+sciformat(20)
 end
 
-function h=plotsort(x0,A)
+function [h,x0,A]=plotsort(x0,A,color)
 [x0,index]=sort(x0);
 A=A(index);
-h=plot(x0,A);
+h=plot(x0,A,color,'LineWidth',2);
 end
 
 function saveit(param,opt)
 h=gcf;
 temp=['_n',num2str(param.n),'_',toString(param.M,'-')];
-str=[opt.save.path,'/',opt.save.pre,temp,opt.save.suffix];
+str=[opt.save.pre,temp];
 if opt.save.enabled
-    saveas(h,str);
+    savesci(str,h);
 else
     disp(str);
 end
@@ -212,4 +234,20 @@ for i=1:length(m)-1
     str=[str,num2str(m(i)),split];
 end
 str=[str,num2str(m(end))];
+end
+
+function [xt,yt]=draw_trough(A,x0)
+hold on
+[~,locs] = findpeaks(-A);
+xt=x0(locs);
+yt=A(locs);
+plot(xt,yt,'bs');
+end
+
+function [xp,yp]=draw_peaks(A,x0)
+hold on
+[~,locs] = findpeaks(A);
+xp=x0(locs);
+yp=A(locs);
+plot(xp,yp,'bs');
 end

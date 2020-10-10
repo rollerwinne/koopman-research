@@ -3,7 +3,7 @@ clc;close all;clear
 tic;timestart=char(datetime('now'));
 %disp('The running program is from ZC. 么么哒')
 %% Parameter settings
-a=1.4;b=0.3;n=2000;m=4;
+a=1.4;b=0.3;n=2000;m=2;
 times=1;d=0;
 
 Attr=load('./data/Henon_attractors_data_xy.mat'); % 吸引子数据载入

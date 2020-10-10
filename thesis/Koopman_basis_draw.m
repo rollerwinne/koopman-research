@@ -26,7 +26,7 @@ param.x0=linspace(param.phase(1),param.phase(2),param.n);
 param.times=1;
 param.basis='Gauss';
 
-options.save.enabled=true;
+options.save.enabled=false;
 options.save.path='./temp';
 options.save.pre='Tent_natural';
 options.save.suffix='.png';
